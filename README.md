@@ -4,7 +4,9 @@ Libvirt, the most common virtualization library on Linux, uses XML to store the 
 
 [The reference Domain XML format webpage](https://libvirt.org/formatdomain.html), which lists most of the accepted parameters that can be used to define a virtual machine, is almost 100 pages long. It is daunting to pick the most optimized parameters for running a particular guest operating system (OS) well.
 
-This repository's goal is to maintain definitions that are tuned for running modern OS, leveraging as many paravirtualized devices (virtio) the target guest OS support.
+This repository's goal is to maintain definitions that are tuned for running modern OS, leveraging as many paravirtualized devices (virtio) the target guest OS support. 
+
+More information [here](https://wiki.phyllo.me/e/en/virt/guest) on the status for virtio support on guest operating systems.
 
 ## Requirements
 
@@ -34,6 +36,22 @@ $ virsh define linux.xml
 ```
 # virsh define linux.xml
 ```
+
+## Status
+
+|                     |             Linux             |       Windows       |
+| :------------------ | :---------------------------: | :-----------------: |
+| *Chipset*           |             `Q35`             |        `Q35`        |
+| *Platform Firmware* |            `OVMF`             |       `OVMF`        |
+| *`Spice display`*   |       **Yes**, with 3D        | **Yes**, without 3D |
+| *`virtio-gpu`*      |       **Yes**, with 3D        | **Yes**, without 3D |
+| *`virtio-blk`*      |        Not applicable         |   Not applicable    |
+| *`virtio-scsi`*     |            **Yes**            |       **Yes**       |
+| *`virtio-fs`*       | **Yes**, for System-driven VM |       **Yes**       |
+| *`virtio-net`*      |            **Yes**            |       **Yes**       |
+| *`virtio-keyboard`* |            **Yes**            |       **Yes**       |
+| *`virtio-tablet`*   |            **Yes**            |       **Yes**       |
+
 
 ## Ressources
 
