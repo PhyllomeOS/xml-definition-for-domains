@@ -4,44 +4,52 @@
 
 This repository's goal is to maintain definitions that are tuned for running modern, GUI-driven guest operating systems (OS), easing their installation on hosts that leverage KVM, such as [Phyllome OS](https://phyllo.me/).
 
+There are two kinds of definition for QEMU: **session-driven** virtual machines, and **system-driven** virtual machines. System-driven virtual machines are running with higher privileges. If one intend to share a physical device with a virtual machine using VFIO passthrough, this is the definition to use. More information [here](https://blog.wikichoon.com/2016/01/qemusystem-vs-qemusession.html).
+
 ## Usage
 
 ### Requirements
 
 It is expected that libvirt and other dependencies such as QEMU or the Cloud Hypervisor are already installed and correctly configured.
 
-* At least QEMU emulator version 7.0.0
-* At least libvirt 8.6.0
+* At least `QEMU` emulator version 7.0.0
+* At least `libvirt` 8.6.0
+* [Netboot.xyz](https://netboot.xyz/) ISO file under `/var/lib/libvirt/isos`
 
 ### How to use it
 
-* Clone this repository locally
+* Download `Netboot.xyz.iso` file
 
-There are two kinds of definition for QEMU: session-driven virtual machines, and system-driven virtual machines. System-driven virtual machines are running with higher privileges. If one intend to share a physical device with a virtual machine using vfio passthrough, this is the definition to use. More information [here](https://blog.wikichoon.com/2016/01/qemusystem-vs-qemusession.html).
+```
+# wget https://boot.netboot.xyz/ipxe/netboot.xyz.iso -P /var/lib/libvirt/isos/
+```
 
-#### Session-driven QEMU virtual machines
+* Clone this repository
 
 * Navigate to the session directory
+
 * Choose your target OS of choice and, as a normal user, use the following `virsh` command to define a virtual machine:
 
 ```
-$ virsh define linux.xml
-Domain 'Linux' defined from linux.xml
+$ virsh define linux54.xml
+Domain 'Linux5.4' defined from linux54.xml
 ```
 
 * List the newly-created virtual machine
 
 ```
 $ virsh list --all
- Id   Name    State
+ Id   Name       State
 ------------------------
- -    Linux   shut off
+ -    Linux5.4   shut off
 ```
 
 * Destroy it
 
-virsh undefine Linux
+```
+$ virsh undefine Linux5.4
 Domain 'Linux' has been undefined
+```
 
 ### System-driven virtual machines
 
@@ -49,23 +57,41 @@ Domain 'Linux' has been undefined
 * Choose your target OS of choice and, as a root user, use the following `virsh` command to define a virtual machine:
 
 ```
-# virsh define linux.xml
+# virsh define linux54.xml
+Domain 'Linux5.4' defined from linux54.xml
+```
+
+```
+# virsh list --all
+ Id   Name       State
+------------------------
+ -    Linux5.4   shut off
+```
+
+* Destroy it
+
+```
+# virsh undefine Linux5.4
+Domain 'Linux5.4' has been undefined
 ```
 
 ## Status
 
-|                     |             Linux             |       Windows       |
-| :------------------ | :---------------------------: | :-----------------: |
-| *Chipset*           |             `Q35`             |        `Q35`        |
-| *Platform Firmware* |            `OVMF`             |       `OVMF`        |
-| *`Spice display`*   |       **Yes**, with 3D        | **Yes**, without 3D |
-| *`virtio-gpu`*      |       **Yes**, with 3D        | **Yes**, without 3D |
-| *`virtio-blk`*      |        Not applicable         |   Not applicable    |
-| *`virtio-scsi`*     |            **Yes**            |       **Yes**       |
-| *`virtio-fs`*       | **Yes**, for System-driven VM |       **Yes**       |
-| *`virtio-net`*      |            **Yes**            |       **Yes**       |
-| *`virtio-keyboard`* |            **Yes**            |       **Yes**       |
-| *`virtio-tablet`*   |            **Yes**            |       **Yes**       |
+|     | Linux 5.4 | Linux 5.15 | Windows 10 | Windows 11 |
+| --- | --- | --- | --- | --- |
+| *Chipset* | `Q35` | `Q35` | `Q35` | `Q35` |
+| *Platform Firmware* | `OVMF` | `OVMF` | `OVMF` | `OVMF` |
+| *Secure boot* | No  | No  | No  | **Yes** |
+| *[Netboot.xyz](https://netboot.xyz/) ISO loaded* | **Yes** | **Yes** | **Yes** | No |
+| *`Spice display`* | **Yes**, with 3D accel. | **Yes**, with 3D accel. | **Yes**, without 3D accel. | **Yes**, without 3D accel. |
+| *`virtio-gpu`* | **Yes**, with 3D accel. | **Yes**, with 3D accel. | **Yes**, without 3D  accel. | **Yes**, without 3D  accel. |
+| *`virtio-blk`* | Not applicable | Not applicable | Not applicable | Not applicable |
+| *`virtio-scsi`* | **Yes** | **Yes** | **Yes** | **Yes** |
+| *`virtio-fs`* | **Yes**, for System-driven VM | **Yes**, for System-driven VM | **Yes** | **Yes** |
+| *`virtio-net`* | **Yes** | **Yes** | **Yes** | **Yes** |
+| *`virtio-keyboard`* | **Yes** | **Yes** | **Yes** | **Yes** |
+| *`virtio-tablet`* | **Yes** | **Yes** | **Yes** | **Yes** |
+| *`virtio-iommu`* | No | **Yes** | No | No |
 
 More information [here](https://wiki.phyllo.me/e/en/virt/guest) on the status for virtio support on guest operating systems.
 
