@@ -1,32 +1,38 @@
 <domain type='kvm'>
-  <name>Windows NT</name>
+  <name>WindowsNT10</name>
   <memory unit='KiB'>4194304</memory>
-  <description>System-based Q35 UEFI-based virtual machine optimized for Windows NT guests, starting at Windows 10</description>
+  <description>QEMU virtual machine model optimized for Windows NT 10 guests such as Windows 10. Secure boot is disabled</description>
   <currentMemory unit='KiB'>4194304</currentMemory>
   <memoryBacking>
     <source type="memfd"/>
     <access mode="shared"/>
   </memoryBacking>
   <vcpu placement='static'>4</vcpu>
-  <os firmware="efi">
-    <type arch='x86_64' machine='pc-q35-7.0'>hvm</type>
+  <os>
+    <type arch='x86_64' machine='pc-q35-7.2'>hvm</type>
+    <loader readonly='yes' secure='no' type='pflash'>/usr/share/OVMF/OVMF_CODE.fd</loader>    
+    <boot dev='cdrom'/>
   </os>
   <features>
   <acpi/>
   <apic/>
-    <hyperv mode="custom">
-      <relaxed state="on"/>
-      <vapic state="on"/>
-      <spinlocks state="on" retries="8191"/>
-      <vpindex state="on"/>
-      <runtime state="on"/>
-      <synic state="on"/>
-      <stimer state="on"/>
-      <frequencies state="on"/>
-      <tlbflush state="on"/>
-      <ipi state="on"/>
-    </hyperv>
-    <vmport state="off"/>
+  <hyperv mode="custom">
+    <relaxed state="on"/>
+    <vapic state="on"/>
+    <spinlocks state="on" retries="8191"/>
+    <vpindex state="on"/>
+    <runtime state="on"/>
+    <synic state="on"/>
+    <stimer state="on"/>
+    <vendor_id state='on' value='Phyllome OS'/>
+    <frequencies state="on"/>
+    <tlbflush state="on"/>
+    <ipi state="on"/>
+  </hyperv>
+  <kvm>
+    <hidden state='on'/>
+  </kvm>
+  <vmport state="off"/>
   </features>
   <cpu mode="host-passthrough" check="none" migratable="on">
     <topology sockets="1" dies="1" cores="2" threads="2"/>
@@ -46,6 +52,12 @@
   </pm>
   <devices>
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
+    <disk type="file" device="cdrom">
+      <driver name="qemu" type="raw"/>
+      <source file="/var/lib/libvirt/isos/netboot.xyz.iso"/>
+      <target dev="sda" bus="sata"/>
+      <readonly/>
+    </disk>
     <controller type='virtio-serial' index='0'>
     </controller>
     <interface type="network">
