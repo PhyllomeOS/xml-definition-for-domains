@@ -26,9 +26,9 @@ It is expected that libvirt and other dependencies such as QEMU or the Cloud Hyp
 
 * Clone this repository
 
-* Navigate to the session directory
+* Navigate to the *session* directory
 
-* Choose your target OS of choice and, as a normal user, use the following `virsh` command to define a virtual machine:
+* Choose your target OS of choice and, as a normal user, use the following `virsh` command to create a virtual machine using the `define` argument:
 
 ```
 $ virsh define linux54.xml
@@ -44,7 +44,7 @@ $ virsh list --all
  -    Linux5.4   shut off
 ```
 
-* Destroy it
+* Delete the virtual machine usine the `undefine` argument
 
 ```
 $ virsh undefine Linux5.4
@@ -53,7 +53,8 @@ Domain 'Linux' has been undefined
 
 ### System-driven virtual machines
 
-* Navigate to the system directory
+* Navigate to the *system* directory
+
 * Choose your target OS of choice and, as a root user, use the following `virsh` command to define a virtual machine:
 
 ```
@@ -68,7 +69,7 @@ Domain 'Linux5.4' defined from linux54.xml
  -    Linux5.4   shut off
 ```
 
-* Destroy it
+* Delete it
 
 ```
 # virsh undefine Linux5.4
