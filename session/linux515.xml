@@ -1,7 +1,7 @@
 <domain type='kvm'>
-  <name>Linux5.4</name>
+  <name>linux515</name>
   <memory unit='KiB'>4194304</memory>
-  <description>Rootless QEMU virtual machine model optimized for Linux guests running at least kernel 5.4. Secure boot is disabled</description>
+  <description>Rootless QEMU virtual machine model optimized for Linux guests running at least kernel 5.15. Secure boot is disabled</description>
   <memory unit="KiB">4194304</memory>
   <currentMemory unit="KiB">1048576</currentMemory>
   <vcpu placement='static'>4</vcpu>
@@ -75,6 +75,7 @@
     <rng model='virtio'>
       <backend model='random'>/dev/urandom</backend>
     </rng>
+    <iommu model="virtio"/>
   </devices>
 </domain>
 

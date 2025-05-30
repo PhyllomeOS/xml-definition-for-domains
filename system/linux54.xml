@@ -1,7 +1,7 @@
 <domain type='kvm'>
-  <name>Linux5.15</name>
+  <name>linux54</name>
   <memory unit='KiB'>4194304</memory>
-  <description>QEMU Virtual machine model optimized for Linux guests running at least kernel 5.15. Secure boot is disabled</description>
+  <description>QEMU Virtual machine model optimized for Linux guests running at least kernel 5.4. Secure boot is disabled</description>
   <memory unit="KiB">4194304</memory>
   <currentMemory unit="KiB">1048576</currentMemory>
   <memoryBacking>
@@ -85,7 +85,6 @@
       <source dir="/mnt/"/>
       <target dir="share"/>
     </filesystem>
-    <iommu model="virtio"/>
   </devices>
 </domain>
 

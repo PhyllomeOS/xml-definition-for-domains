@@ -1,8 +1,9 @@
 <domain type='kvm'>
-  <name>WindowsNT10</name>
+  <name>linux515</name>
   <memory unit='KiB'>4194304</memory>
-  <description>QEMU virtual machine model optimized for Windows NT 10 guests such as Windows 10. Secure boot is disabled</description>
-  <currentMemory unit='KiB'>4194304</currentMemory>
+  <description>QEMU Virtual machine model optimized for Linux guests running at least kernel 5.15. Secure boot is disabled</description>
+  <memory unit="KiB">4194304</memory>
+  <currentMemory unit="KiB">1048576</currentMemory>
   <memoryBacking>
     <source type="memfd"/>
     <access mode="shared"/>
@@ -14,34 +15,17 @@
     <boot dev='cdrom'/>
   </os>
   <features>
-  <acpi/>
-  <apic/>
-  <hyperv mode="custom">
-    <relaxed state="on"/>
-    <vapic state="on"/>
-    <spinlocks state="on" retries="8191"/>
-    <vpindex state="on"/>
-    <runtime state="on"/>
-    <synic state="on"/>
-    <stimer state="on"/>
-    <vendor_id state='on' value='Phyllome OS'/>
-    <frequencies state="on"/>
-    <tlbflush state="on"/>
-    <ipi state="on"/>
-  </hyperv>
-  <kvm>
-    <hidden state='on'/>
-  </kvm>
-  <vmport state="off"/>
+    <acpi/>
+    <apic/>
+    <vmport state='off'/>
   </features>
   <cpu mode="host-passthrough" check="none" migratable="on">
     <topology sockets="1" dies="1" cores="2" threads="2"/>
   </cpu>
-  <clock offset="localtime">
-    <timer name="rtc" tickpolicy="catchup"/>
-    <timer name="pit" tickpolicy="delay"/>
-    <timer name="hpet" present="no"/>
-    <timer name="hypervclock" present="yes"/>
+  <clock offset='utc'>
+    <timer name='rtc' tickpolicy='catchup'/>
+    <timer name='pit' tickpolicy='delay'/>
+    <timer name='hpet' present='no'/>
   </clock>
   <on_poweroff>destroy</on_poweroff>
   <on_reboot>restart</on_reboot>
@@ -85,14 +69,14 @@
     <graphics type="spice">
       <listen type="none"/>
       <image compression="off"/>
-      <gl enable="no"/>
+      <gl enable="yes"/>
     </graphics>
     <video>
       <model type="virtio" heads="1" primary="yes">
-      <acceleration accel3d="no"/>
+      <acceleration accel3d="yes"/>
       </model>
     </video>
-    <memballoon model='none'/>
+    <memballoon model="virtio"/>
     <rng model='virtio'>
       <backend model='random'>/dev/urandom</backend>
     </rng>
@@ -101,6 +85,7 @@
       <source dir="/mnt/"/>
       <target dir="share"/>
     </filesystem>
+    <iommu model="virtio"/>
   </devices>
 </domain>
 

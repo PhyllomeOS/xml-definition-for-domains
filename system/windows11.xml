@@ -1,27 +1,47 @@
 <domain type='kvm'>
-  <name>Linux5.15</name>
+  <name>windows11</name>
   <memory unit='KiB'>4194304</memory>
-  <description>Rootless QEMU virtual machine model optimized for Linux guests running at least kernel 5.15. Secure boot is disabled</description>
-  <memory unit="KiB">4194304</memory>
-  <currentMemory unit="KiB">1048576</currentMemory>
+  <description>QEMU virtual machine model optimized for Windows NT 11 guests such as Windows 11. Secure boot is enabled</description>
+  <currentMemory unit='KiB'>4194304</currentMemory>
+  <memoryBacking>
+    <source type="memfd"/>
+    <access mode="shared"/>
+  </memoryBacking>
   <vcpu placement='static'>4</vcpu>
-  <os>
+  <os firmware="efi">
     <type arch='x86_64' machine='q35'>hvm</type>
-    <loader readonly='yes' secure='no' type='pflash'>/usr/share/OVMF/OVMF_CODE.fd</loader>    
+    <loader secure='yes'/>
     <boot dev='cdrom'/>
   </os>
   <features>
-    <acpi/>
-    <apic/>
-    <vmport state='off'/>
+  <acpi/>
+  <apic/>
+  <hyperv mode="custom">
+    <relaxed state="on"/>
+    <vapic state="on"/>
+    <spinlocks state="on" retries="8191"/>
+    <vpindex state="on"/>
+    <runtime state="on"/>
+    <synic state="on"/>
+    <stimer state="on"/>
+    <vendor_id state='on' value='Phyllome OS'/>
+    <frequencies state="on"/>
+    <tlbflush state="on"/>
+    <ipi state="on"/>
+  </hyperv>
+  <kvm>
+    <hidden state='on'/>
+  </kvm>
+  <vmport state="off"/>
   </features>
   <cpu mode="host-passthrough" check="none" migratable="on">
     <topology sockets="1" dies="1" cores="2" threads="2"/>
   </cpu>
-  <clock offset='utc'>
-    <timer name='rtc' tickpolicy='catchup'/>
-    <timer name='pit' tickpolicy='delay'/>
-    <timer name='hpet' present='no'/>
+  <clock offset="localtime">
+    <timer name="rtc" tickpolicy="catchup"/>
+    <timer name="pit" tickpolicy="delay"/>
+    <timer name="hpet" present="no"/>
+    <timer name="hypervclock" present="yes"/>
   </clock>
   <on_poweroff>destroy</on_poweroff>
   <on_reboot>restart</on_reboot>
@@ -34,14 +54,14 @@
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
     <disk type="file" device="cdrom">
       <driver name="qemu" type="raw"/>
-      <source file="/var/lib/libvirt/isos/netboot.xyz.iso"/>
       <target dev="sda" bus="sata"/>
       <readonly/>
     </disk>
     <controller type='virtio-serial' index='0'>
     </controller>
-    <interface type='user'>
-      <model type='virtio'/>
+    <interface type="network">
+      <model type="virtio"/>
+      <source network="default"/>
     </interface>
     <console type='pty'>
       <target type='virtio' port='0'/>
@@ -64,18 +84,22 @@
     <graphics type="spice">
       <listen type="none"/>
       <image compression="off"/>
-      <gl enable="yes"/>
+      <gl enable="no"/>
     </graphics>
     <video>
       <model type="virtio" heads="1" primary="yes">
-      <acceleration accel3d="yes"/>
+      <acceleration accel3d="no"/>
       </model>
     </video>
-    <memballoon model="virtio"/>
+    <memballoon model='none'/>
     <rng model='virtio'>
       <backend model='random'>/dev/urandom</backend>
     </rng>
-    <iommu model="virtio"/>
+    <filesystem type="mount" accessmode="passthrough">
+      <driver type="virtiofs"/>
+      <source dir="/mnt/"/>
+      <target dir="share"/>
+    </filesystem>
   </devices>
 </domain>
 
