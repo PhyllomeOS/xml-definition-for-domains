@@ -21,7 +21,7 @@ The best parameters are defined as parameters that are:
 
 There are two kinds of definition for QEMU: **session-driven** virtual machines, and **system-driven** virtual machines. 
 
-- **System-driven virtual machines** are running with higher privileges. If one intend to share a physical device with a virtual machine using VFIO passthrough, this is the definition to use. More information [here](https://blog.wikichoon.com/2016/01/qemusystem-vs-qemusession.html).
+- **System-driven virtual machines** are running with higher privileges. If one intend to share a physical device with a virtual machine using VFIO passthrough, this is the definition to use. More information [here](https://blog.wikichoon.com/2016/01/qemusystem-vs-qemusession.html) or [here](https://wiki.libvirt.org/FAQ.html#what-is-the-difference-between-qemu-system-and-qemu-session-which-one-should-i-use)
 
 - **Session-driven virtual machines** are running with user-derived privileges. 
 
