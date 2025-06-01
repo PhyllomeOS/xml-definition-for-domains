@@ -9,10 +9,10 @@
     <access mode="shared"/>
   </memoryBacking>
   <vcpu placement='static'>4</vcpu>
-  <os>
-    <type arch='x86_64' machine='q35'>hvm</type>
-    <loader readonly='yes' secure='no' type='pflash'>/usr/share/OVMF/OVMF_CODE.fd</loader>    
-    <boot dev='cdrom'/>
+  <os firmware="efi">
+    <type arch="x86_64" machine="q35">hvm</type>
+    <loader secure='no'/>
+    <boot dev="cdrom"/>
   </os>
   <features>
     <acpi/>
@@ -80,12 +80,13 @@
     <rng model='virtio'>
       <backend model='random'>/dev/urandom</backend>
     </rng>
+    <sound model="virtio"/>
     <filesystem type="mount" accessmode="passthrough">
       <driver type="virtiofs"/>
-      <source dir="/mnt/"/>
-      <target dir="share"/>
+      <source dir="/var/lib/libvirt/isos/"/>
+      <target dir="isos"/>
+      <readonly/>
     </filesystem>
     <iommu model="virtio"/>
   </devices>
 </domain>
-
