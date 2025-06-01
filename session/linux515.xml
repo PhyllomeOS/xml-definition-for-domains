@@ -1,9 +1,8 @@
 <domain type='kvm'>
   <name>linux515</name>
-  <memory unit='KiB'>4194304</memory>
   <description>Rootless QEMU virtual machine model optimized for Linux guests running at least kernel 5.15. Secure boot is disabled</description>
-  <memory unit="KiB">4194304</memory>
-  <currentMemory unit="KiB">1048576</currentMemory>
+  <memory unit="GiB">4</memory>
+  <currentMemory unit="GiB">1</currentMemory>
   <memoryBacking>
     <source type="memfd"/>
     <access mode="shared"/>
