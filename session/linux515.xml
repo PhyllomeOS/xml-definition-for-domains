@@ -4,11 +4,15 @@
   <description>Rootless QEMU virtual machine model optimized for Linux guests running at least kernel 5.15. Secure boot is disabled</description>
   <memory unit="KiB">4194304</memory>
   <currentMemory unit="KiB">1048576</currentMemory>
+  <memoryBacking>
+    <source type="memfd"/>
+    <access mode="shared"/>
+  </memoryBacking>
   <vcpu placement='static'>4</vcpu>
-  <os>
-    <type arch='x86_64' machine='q35'>hvm</type>
-    <loader readonly='yes' secure='no' type='pflash'>/usr/share/OVMF/OVMF_CODE.fd</loader>    
-    <boot dev='cdrom'/>
+  <os firmware="efi">
+    <type arch="x86_64" machine="pc-q35-10.0">hvm</type>
+    <loader secure='no'/>
+    <boot dev="cdrom"/>
   </os>
   <features>
     <acpi/>
@@ -39,42 +43,50 @@
       <readonly/>
     </disk>
     <controller type='virtio-serial' index='0'>
+      <model type='virtio-non-transitional'/>
     </controller>
+    <smartcard mode='host'/>
     <interface type='user'>
+      <backend type='passt'/>
       <model type='virtio'/>
     </interface>
     <console type='pty'>
       <target type='virtio' port='0'/>
     </console>
-    <channel type="spicevmc">
-      <target type="virtio" name="com.redhat.spice.0"/>
-    <address type="virtio-serial" controller="0" bus="0" port="1"/>
-    </channel>
     <channel type='unix'>
       <target type='virtio' name='org.qemu.guest_agent.0'/>
       <address type='virtio-serial' controller='0' bus='0' port='2'/>
     </channel>
     <input type='keyboard' bus='virtio'>
     </input>
-    <input type='tablet' bus='virtio'>
+    <input type='mouse' bus='virtio'>
     </input>
     <tpm model="tpm-crb">
       <backend type="emulator" version="2.0"/>
     </tpm>
-    <graphics type="spice">
-      <listen type="none"/>
-      <image compression="off"/>
+    <graphics type="dbus">
       <gl enable="yes"/>
+      <audio id="1"/>
     </graphics>
     <video>
       <model type="virtio" heads="1" primary="yes">
       <acceleration accel3d="yes"/>
       </model>
     </video>
-    <memballoon model="virtio"/>
-    <rng model='virtio'>
+    <sound model="virtio"/>
+    <memballoon model="virtio-non-transitional"/>
+    <rng model="virtio-non-transitional">
       <backend model='random'>/dev/urandom</backend>
     </rng>
+    <filesystem type="mount" accessmode="passthrough">
+      <driver type="virtiofs"/>
+      <source dir="/mnt"/>
+      <target dir="mnt"/>
+      <readonly/>
+    </filesystem>
+    <vsock model="virtio-non-transitional">
+      <cid auto="yes"/>
+    </vsock>
     <iommu model="virtio"/>
   </devices>
 </domain>
