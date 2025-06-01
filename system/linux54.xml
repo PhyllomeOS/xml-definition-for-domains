@@ -76,6 +76,7 @@
       <acceleration accel3d="yes"/>
       </model>
     </video>
+    <sound model="virtio"/>
     <memballoon model="virtio"/>
     <rng model='virtio'>
       <backend model='random'>/dev/urandom</backend>
