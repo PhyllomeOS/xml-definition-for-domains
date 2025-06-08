@@ -17,17 +17,22 @@
   <acpi/>
   <apic/>
   <hyperv mode="custom">
-    <relaxed state="on"/>
-    <vapic state="on"/>
-    <spinlocks state="on" retries="8191"/>
-    <vpindex state="on"/>
-    <runtime state="on"/>
-    <synic state="on"/>
-    <stimer state="on"/>
-    <vendor_id state='on' value='Phyllome OS'/>
-    <frequencies state="on"/>
-    <tlbflush state="on"/>
-    <ipi state="on"/>
+    <relaxed state='on'/>
+    <vapic state='on'/>
+    <spinlocks state='on' retries='4096'/>
+    <vpindex state='on'/>
+    <runtime state='on'/>
+    <synic state='on'/>
+    <stimer state='on'>
+      <direct state='on'/>
+    </stimer>
+    <reset state='on'/>
+    <frequencies state='on'/>
+    <reenlightenment state='on'/>
+    <tlbflush state='on'>
+      <direct state='on'/>
+      <extended state='on'/>
+    </tlbflush>
   </hyperv>
   <kvm>
     <hidden state='on'/>
