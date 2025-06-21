@@ -21,14 +21,14 @@
     <topology sockets="1" dies="1" cores="2" threads="2"/>
   </cpu>
   <clock offset='utc'>
-    <timer name='kvmclock' tickpolicy='catchup'/>
+    <timer name='kvmclock'/>
   </clock>
   <on_poweroff>destroy</on_poweroff>
   <on_reboot>restart</on_reboot>
   <on_crash>destroy</on_crash>
   <pm>
-    <suspend-to-mem enabled='no'/>
-    <suspend-to-disk enabled='no'/>
+    <suspend-to-mem enabled='yes'/>
+    <suspend-to-disk enabled='yes'/>
   </pm>
   <devices>
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
@@ -41,7 +41,6 @@
     <controller type='virtio-serial' index='0'>
       <model type='virtio-non-transitional'/>
     </controller>
-    <smartcard mode='host'/>
     <interface type='user'>
       <backend type='passt'/>
       <model type='virtio'/>
@@ -60,9 +59,10 @@
     <tpm model="tpm-crb">
       <backend type="emulator" version="2.0"/>
     </tpm>
-    <graphics type="dbus">
+    <graphics type="spice">
+      <listen type="none"/>
+      <image compression="off"/>
       <gl enable="yes"/>
-      <audio id="1"/>
     </graphics>
     <video>
       <model type="virtio" heads="1" primary="yes">
@@ -80,9 +80,6 @@
       <target dir="mnt"/>
       <readonly/>
     </filesystem>
-    <vsock model="virtio-non-transitional">
-      <cid auto="yes"/>
-    </vsock>
     <iommu model="virtio"/>
   </devices>
 </domain>
