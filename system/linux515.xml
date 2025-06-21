@@ -17,15 +17,12 @@
   <features>
     <acpi/>
     <apic/>
-    <vmport state='off'/>
   </features>
-  <cpu mode="host-passthrough" check="none" migratable="on">
+  <cpu mode="host-model">
     <topology sockets="1" dies="1" cores="2" threads="2"/>
   </cpu>
   <clock offset='utc'>
-    <timer name='rtc' tickpolicy='catchup'/>
-    <timer name='pit' tickpolicy='delay'/>
-    <timer name='hpet' present='no'/>
+    <timer name='kvmclock'/>
   </clock>
   <on_poweroff>destroy</on_poweroff>
   <on_reboot>restart</on_reboot>
