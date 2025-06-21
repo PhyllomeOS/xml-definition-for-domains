@@ -8,10 +8,10 @@
     <access mode="shared"/>
   </memoryBacking>
   <vcpu placement='static'>4</vcpu>
-  <os>
-    <type arch='x86_64' machine='q35'>hvm</type>
-    <loader readonly='yes' secure='no' type='pflash'>/usr/share/OVMF/OVMF_CODE.fd</loader>    
-    <boot dev='cdrom'/>
+  <os firmware="efi">
+    <type arch="x86_64" machine="q35">hvm</type>
+    <loader secure='no'/>
+    <boot dev="cdrom"/>
   </os>
   <features>
   <acpi/>
@@ -37,15 +37,11 @@
   <kvm>
     <hidden state='on'/>
   </kvm>
-  <vmport state="off"/>
   </features>
-  <cpu mode="host-passthrough" check="none" migratable="on">
+  <cpu mode="host-model">
     <topology sockets="1" dies="1" cores="2" threads="2"/>
   </cpu>
   <clock offset="localtime">
-    <timer name="rtc" tickpolicy="catchup"/>
-    <timer name="pit" tickpolicy="delay"/>
-    <timer name="hpet" present="no"/>
     <timer name="hypervclock" present="yes"/>
   </clock>
   <on_poweroff>destroy</on_poweroff>
