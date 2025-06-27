@@ -1,4 +1,4 @@
-# Optimized, libvirt-compatible definitions for common OS
+# Lbvirt-compatible VM definitions for common OS
 
 ## Goal
 
